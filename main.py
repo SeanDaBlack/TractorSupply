@@ -1,3 +1,4 @@
+import argparse
 from faker import Faker
 import random
 import requests
@@ -12,8 +13,18 @@ from selenium.webdriver.support import expected_conditions as EC
 from select_store import select_store, find_store_on_yelp
 MAIL_GENERATION_WEIGHTS = [1, 0.95, 0.7, 0.75, 0.7, 0.5]
 
+CLOUD_DESCRIPTION = 'Puts script in a \'cloud\' mode where the Chrome GUI is invisible'
+CLOUD_DISABLED = False
+CLOUD_ENABLED = True
+EPILOG = ''
+SCRIPT_DESCRIPTION = ''
 
 fake = Faker()
+parser = argparse.ArgumentParser(SCRIPT_DESCRIPTION, epilog=EPILOG)
+parser.add_argument('--cloud', action='store_true', default=CLOUD_DISABLED,
+                    required=False, help=CLOUD_DESCRIPTION, dest='cloud')
+
+args = parser.parse_args()
 
 
 def random_email(name=None):
@@ -63,31 +74,28 @@ def createMail(fake_identity):
 
 def start_driver(url):
 
-    # if (args.cloud == CLOUD_ENABLED):
+    if (args.cloud == CLOUD_ENABLED):
 
-#     #driver = geckodriver("./extensions/Tampermonkey.xpi")
-    options = webdriver.ChromeOptions()
-    
-    service = Service(ChromeDriverManager().install())
+        options = webdriver.ChromeOptions()
     
     
-#     options.add_argument('--headless')
-#     options.add_argument('--no-sandbox')
-#     options.add_argument('--disable-dev-shm-usage')
+        
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
 
-#     options.add_argument("window-size=1200x600")
-    # driver = webdriver.Chrome(
-    #     'chromedriver', options=options)
+        options.add_argument("window-size=1200x600")
+        driver = webdriver.Chrome(
+            'chromedriver', options=options)
 
-    # else:
-    # options = webdriver.ChromeOptions()
-    # options.add_argument(
-    #     "--disable-blink-features=AutomationControlled")
-    # # options.add_extension("./tractorDEI/extensions/vpn.crx")
-    # # options.add_extension("/Users/seanwiggs/Documents/Code/Yelp/tractorDEI/extensions/vpn2.crx")
-    driver = webdriver.Chrome(service=
-        service, options=options)
-    
+    else:
+        service = Service(ChromeDriverManager().install())
+        options = webdriver.ChromeOptions()
+        options.add_argument(
+            "--disable-blink-features=AutomationControlled")
+        driver = webdriver.Chrome(service=
+            service, options=options)
+        
     # driver = webdriver.Chrome()
 
     # installCaptcha(driver)
