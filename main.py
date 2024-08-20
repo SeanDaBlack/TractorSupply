@@ -252,9 +252,9 @@ if __name__ == "__main__":
     # print(fake_identity)
 
 
-    driver = start_driver("https://yelp.com")
-    # select_store(driver, fake_identity['zip'])
-    find_store_on_yelp(driver, fake_identity['zip'])
+    driver = start_driver("https://google.com")
+    fake_identity = select_store(driver, fake_identity)
+    find_store_on_yelp(driver, fake_identity)
 
     doReview(driver, fake_identity, "", "", "https://www.yelp.co.uk/biz/tractor-supply-ridgecrest?osq=Tractor+Supply+Co")
 
