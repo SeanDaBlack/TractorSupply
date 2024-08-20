@@ -79,6 +79,13 @@ def select_store(driver, fake_identity):
     driver.get(store_url)
     
     # Get elements with class "store-card" and select a random one
+    
+    time.sleep(2)
+    # wait for page to load
+    
+    driver.implicitly_wait(10)
+    
+    print(driver.page_source)
     stores = random.choice(driver.find_elements(By.CLASS_NAME, "store-card"))
     
     store_text = stores.text.split("\n")
@@ -95,7 +102,7 @@ def select_store(driver, fake_identity):
     
 def find_store_on_yelp(driver, fake_identity):
     
-    store_url = f"https://www.yelp.co.uk/search?find_desc=Tractor+Supply&find_loc={fake_identity["city"]}%2C+{fake_identity["state"]}"
+    store_url = f"https://www.yelp.co.uk/search?find_desc=Tractor+Supply&find_loc={fake_identity['city']}%2C+{fake_identity['state']}"
         
     print("Selecting Store")
     driver.get(store_url)

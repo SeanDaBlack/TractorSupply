@@ -10,6 +10,8 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
 from select_store import select_store, find_store_on_yelp
 MAIL_GENERATION_WEIGHTS = [1, 0.95, 0.7, 0.75, 0.7, 0.5]
 
@@ -77,16 +79,25 @@ def start_driver(url):
     if (args.cloud == CLOUD_ENABLED):
 
         options = webdriver.ChromeOptions()
+        service = Service()
     
-    
-        
+
+
+        desired_capabilities = DesiredCapabilities.CHROME.copy()
+        desired_capabilities['acceptInsecureCerts'] = True
         options.add_argument('--headless')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
-
+        options.add_argument('--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--remote-debugging-port=9222')
         options.add_argument("window-size=1200x600")
-        driver = webdriver.Chrome(
-            'chromedriver', options=options)
+        options.add_argument('--ignore-certificate-errors')
+
+        options.add_argument('--allow-insecure-localhost')
+        options.add_argument('--allow-running-insecure-content')
+        driver = webdriver.Chrome(service=
+            service, options=options)
 
     else:
         service = Service(ChromeDriverManager().install())
